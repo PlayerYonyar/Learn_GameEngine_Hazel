@@ -56,7 +56,16 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                   16:25->Application* CreateApplication(); //To be defined in client  
                   17:39->auto app = Hazel::CreateApplication();
                   18:40->更改了一个疏忽:Hazel::Application* CreateApplication()应改为Hazel::Application* Hazel::CreateApplication()  
-      ...: 成功运行,成功应无限刷新输出 Hello Learn Hazel !
+      ...: 成功运行,成功应无限刷新输出 Hello Learn Hazel !  
+                  18:15->入口点设置成功  
+      ...: 成功运行,成功应输出:Hazel Engine was started !  
+                              Hello Learn Hazel !  
+                              Hazel Engine is being updated !Hello Learn Hazel !  
+                              Hazel Engine is being updated !Hello Learn Hazel !  
+                              Hazel Engine is being updated !Hello Learn Hazel !...  
+                  21:37->关于git的一些使用：创建.gitignore  
+
+
 
 
 

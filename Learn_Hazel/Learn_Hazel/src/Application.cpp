@@ -11,7 +11,7 @@ namespace Hazel
 	}
 	void Application::Run() 
 	{
-		while (true) { printf("Hello Learn Hazel !\n"); };
+		while (true) { printf("Hello Learn Hazel !\nHazel Engine is being updated !"); };
 	}
 }
 
