@@ -1,11 +1,18 @@
 #include "Hazel.h"
-namespace Learn_Hazel
+class Sandbox : public Hazel::Application
 {
-	HAZEL_API void Print();
+public:
+	Sandbox() {}
+	~Sandbox(){}
+};
 
-}
-
-void main()
+//int main()
+//{
+//	Sandbox* sandbox = new Sandbox();
+//	sandbox->Run();
+//	delete sandbox;
+//}
+Hazel::Application* Hazel::CreateApplication() 
 {
-Learn_Hazel::Print();
+	return new Sandbox();
 }

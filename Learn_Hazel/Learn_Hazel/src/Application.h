@@ -1,5 +1,5 @@
 #pragma once
-	
+#include<stdio.h>	
 #include "Hazel/Core.h"	
 namespace Hazel
 {
@@ -10,6 +10,8 @@ namespace Hazel
 		virtual ~Application();
 		void Run();
 	};
+
+	Application* CreateApplication();
 
 }
 

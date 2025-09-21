@@ -48,8 +48,15 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                   07:01->在Core.h中定义平台,免去繁琐的__declspec(dllexport)或declspec(dllimport),替换为HAZEL_API,然后定义平台,(right_Click: Learn_Hazel -> Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;HZ_BUILD_DLL; ,right_Click: Sandbox ->Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;)   
                   09:29->代码转折  
                   10:58->设置包含目录(right_Click -> Sandbox -> Properties -> C/C++ -> General -> Additional Include Directories: $(SolutionDir)Learn_Hazel\src; ) ->这样包含时用不用叫角号都可以  
-                  
-
+                  11:45->创建Sandbx类  
+                  13:19->视频中修复了他之前的2个错误(HZ_BUILD_DLL被误写成了HAZEL_BUILD_DLL, void main() 变为int main(),记得更新Dll)  
+      ...: 在本项目中,修改了部分代码,使成功显示更直观,成功应无限刷新输出 Hello Learn Hazel !  
+                  14:19->创建入口点  
+                  15:15->创建Hazel应用,这里用argc, argv作为参数, 需要去搜索创建应用程序的方法  
+                  16:25->Application* CreateApplication(); //To be defined in client  
+                  17:39->auto app = Hazel::CreateApplication();
+                  18:40->更改了一个疏忽:Hazel::Application* CreateApplication()应改为Hazel::Application* Hazel::CreateApplication()  
+      ...: 成功运行,成功应无限刷新输出 Hello Learn Hazel !
 
 
 
