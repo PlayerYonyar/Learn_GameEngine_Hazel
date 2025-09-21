@@ -63,7 +63,8 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                               Hazel Engine is being updated !Hello Learn Hazel !  
                               Hazel Engine is being updated !Hello Learn Hazel !  
                               Hazel Engine is being updated !Hello Learn Hazel !...  
-                  21:37->关于git的一些使用：创建.gitignore  
+                  21:37->关于git的一些使用：创建.gitignore,使其提交时忽略：.vs/, bin/,bin-int/ 三个文件夹，和*.user等用户文件  
+                     
 
 
 
