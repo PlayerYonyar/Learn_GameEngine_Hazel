@@ -17,7 +17,7 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
 哔哩哔哩 平台翻译后的链接: <https://www.bilibili.com/video/BV1mw41187Ac?vd_source=19057ea4478296c5eac97eb7dcf4e71e> 译者:SPEAUTY  
 ### Current progress and key points of the personal study tutorial(个人学习教程的当前进度和重点记录):  
 [ ] 1-3:  No code, skip(无代码,跳过),Among them are the 3 design levels: timestamp 20:50(其中3设计层级:时间戳 20:50).  
-[ ] 4:    03:22->创建仓库和声明(Apache License 2.0)  
+[ ] 4_项目设置:    03:22->创建仓库和声明(Apache License 2.0)  
       {对开源协议不懂,跳转到相关教程:  
       【常见的开源许可证及主要区别（包括GPL许可证，Apache许可证，BSD许可证，MIT许可证，Mozilla许可证，MulanPSL许可证）】https://www.bilibili.com/video/BV1KW4y1r7rX?vd_source=19057ea4478296c5eac97eb7dcf4e71e  
       08:50正式开始介绍 Apache License 2.0:【Apache协议】https://www.bilibili.com/video/BV17G411m7v7?vd_source=19057ea4478296c5eac97eb7dcf4e71e  
@@ -29,7 +29,7 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                   11:50->(Configuration Manager)删掉不需要的平台,如X86,Win32  
                   12:12->配置类型(General->Configuration Type: exe->dll): Dynamic Library(.dll)  
                   12:32->跳转->关于如何在Windows上设置C++的视频:
-                  13:06->设置 输出,中间目录(Output Directory: $(SolutionDir)$(Platform)\$(Configuration)\ -> $(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\ , Intermediate Directory: $(Platform)\$(Configuration)\ -> $(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\ )  
+                  13:06->设置 输出,中间目录(Output Directory: $(SolutionDir)$(Platform)\$(Configuration)\ -> $(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\ , Intermediate Directory: $(Platform)\$(Configuration)\ -> $(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\ )  
                   15:41->添加项目Sandbox(right_Click: Solution 'Learn_Hazel' -> Add->New Projects... ->Empty Project) -> 同上项目设置  
                   16:36->设置Sandbox为启动项(right_Click: Sandbox -> Set as Startup Project)  
                   17:17->通过VS Code 打开 Learn_Hazel.sln ->将Sandbox从列表的第二项移到第一项  
@@ -37,8 +37,18 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                   18:27->设置连接器(right_Click: Learn_Hazel -> Properties -> Linker -> Command Line ?应该有Learn_Hazle.dll但是没有?)  
                   19:24->设置项目筛选器
                   20:07->创建命名空间: namespace Learn_Hazel  
-                  21:12->构建  
-      !!!: 出现了2个问题:项目设置dll时未采用All Configurations, 2. 命名空间的使用你在调用   Print   函数时，使用了   Learn_Hazel:Print()  ，这是错误的。在 C++ 中，命名空间的正确使用方式是   Learn_Hazel::Print()  ，其中   ::   是作用域解析运算符。
+                  21:12->构建(先构建Learn_Hazel 然后将Learn_Hazel.dll(Learn_GameEngine_Hazel\Learn_Hazel\bin\Debug-x64\Learn_Hazel)移到Sandbox输出exe里(Learn_GameEngine_Hazel\Learn_Hazel\bin\Debug-x64\Sandbox),然后构建Sandbox)->成功后终端输出Hello...  
+      !!!: 出现了2个问题:1.项目设置dll时未采用All Configurations, 2. 命名空间的使用你在调用   Print   函数时，使用了   Learn_Hazel:Print()  ，这是错误的。在 C++ 中，命名空间的正确使用方式是   Learn_Hazel::Print()  ，其中   ::   是作用域解析运算符。
+  
+[ ] 5_入口点:     02:42->解释上一章代码  
+                  04:48->创建c++类:Application,获取Application 类,并将其放入命名空间  
+                  05:42->写一个Run,插入循环,控制程序运行  
+                  05:57->将虚构方法变为虚方法,因为这个类会被Sandbox程序继承  
+                  06:17->必须根据dll的写入位置来设置__declspec(dllexport)或declspec(dllimport)  
+                  07:01->在Core.h中定义平台,免去繁琐的__declspec(dllexport)或declspec(dllimport),替换为HZ_API,然后定义平台,(right_Click: Learn_Hazel -> Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;HZ_BUILD_DLL; ,right_Click: Sandbox ->Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;)   
+                  09:29->代码转折  
+
+
 
 
 
