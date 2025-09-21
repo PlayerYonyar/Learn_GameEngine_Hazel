@@ -78,11 +78,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
+    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Hazel.h" />
     <ClInclude Include="src\Hazel\Core.h" />
     <ClInclude Include="src\Test.h" />
   </ItemGroup>

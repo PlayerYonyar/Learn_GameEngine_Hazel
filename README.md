@@ -45,8 +45,10 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                   05:42->写一个Run,插入循环,控制程序运行  
                   05:57->将虚构方法变为虚方法,因为这个类会被Sandbox程序继承  
                   06:17->必须根据dll的写入位置来设置__declspec(dllexport)或declspec(dllimport)  
-                  07:01->在Core.h中定义平台,免去繁琐的__declspec(dllexport)或declspec(dllimport),替换为HZ_API,然后定义平台,(right_Click: Learn_Hazel -> Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;HZ_BUILD_DLL; ,right_Click: Sandbox ->Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;)   
+                  07:01->在Core.h中定义平台,免去繁琐的__declspec(dllexport)或declspec(dllimport),替换为HAZEL_API,然后定义平台,(right_Click: Learn_Hazel -> Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;HZ_BUILD_DLL; ,right_Click: Sandbox ->Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;)   
                   09:29->代码转折  
+                  10:58->设置包含目录(right_Click -> Sandbox -> Properties -> C/C++ -> General -> Additional Include Directories: $(SolutionDir)Learn_Hazel\src; ) ->这样包含时用不用叫角号都可以  
+                  
 
 
 

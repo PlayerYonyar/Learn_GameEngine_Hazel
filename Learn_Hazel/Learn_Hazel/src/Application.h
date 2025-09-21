@@ -1,9 +1,9 @@
 #pragma once
-
-#include "src/Hazel/Core.h"	
+	
+#include "Hazel/Core.h"	
 namespace Hazel
 {
-	class __declspec(dllexport) Application
+	class HAZEL_API Application
 	{
 	public:
 		Application();

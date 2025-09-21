@@ -1,6 +1,7 @@
+#include "Hazel.h"
 namespace Learn_Hazel
 {
-	__declspec(dllimport) void Print();
+	HAZEL_API void Print();
 
 }
 
