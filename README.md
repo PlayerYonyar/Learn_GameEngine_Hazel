@@ -8,7 +8,8 @@ To avoid misunderstandings, I would like to reiterate that this record is mostly
 # Original Project(原始项目): The original Hazel game engine can be found at: https://github.com/TheCherno/Hazel (原始的Hazel游戏引擎可以在以下地址找到：https://github.com/TheCherno/Hazel)  
 ## License(许可证)
 This project is licensed under the Apache License, Version 2.0. See the LICENSE file for details. (本项目根据 Apache 许可证第 2.0 版进行许可。详细信息请参阅 LICENSE 文件。)  
-### 第三方库引用声明  
+### Third-party library reference declaration(第三方库引用声明)  
+  Special thanks to the authors of the third-party libraries used in engine learning: The logging system is based on the spdlog project by gabime [url = https://github.com/gabime/spdlog.git]  
   额外鸣谢在引擎学习中所使用的第三方库作者:  
   日志系统引用库 来自 gabime的spdlog项目[url = https://github.com/gabime/spdlog.git]  
   
@@ -102,7 +103,26 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                               [10:46:47] APP:Hello App !(文本应是绿色)
                               Hello Learn Hazel !
                               Hazel Engine was started !  
-
+                  23:16->创建宏 -> 替换 Hazel::Log::GetCoreLogger() 如在Log.g中定义: // Core log macros
+                                        #define HZ_CORE_TRACE(...)	::Hazel::Log::GetCoreLogger()->trace(__VA_ARGS__)  
+                  26:06->在定义宏后,EntryPoint.h中用宏替换掉Hazel::Log::GetCoreLogger() ->变为:  
+                                    	Hazel::Log::Init();
+	                                    HZ_CORE_WARN("Initialized log !");
+	                                    HZ_CLIENT_INFO("Hello App !");
+	                                    int a =5;
+	                                    HZ_INFO("Hello! Var={0}",a);
+	                                    printf("Hello Learn Hazel !\nHazel Engine was started !\n");  
+              ...: 注: 在上一次提交中，Log.h中 HZ_CLIENT_...没有大写，本次提交整正  
+              ...: 成功运行,成功应输出: [11:24:03] HAZEL:Initialized log !
+                                      [11:24:03] APP:Hello App !
+                                      [11:24:03] APP:Hello! Var=5
+                                      Hello Learn Hazel !
+                                      Hazel Engine was started !   
+                  26:52->补充说明:建议从发行版中剔除CoreLog->用:  
+                  //if dist build  
+                  #define HZ_CORE_INFO  
+                                  
+                        
             
                   
 
