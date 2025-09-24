@@ -12,7 +12,8 @@ This project is licensed under the Apache License, Version 2.0. See the LICENSE 
   Special thanks to the authors of the third-party libraries used in engine learning: The logging system is based on the spdlog project by gabime [url = https://github.com/gabime/spdlog.git]  
   额外鸣谢在引擎学习中所使用的第三方库作者:  
   日志系统引用库 来自 gabime的spdlog项目[url = https://github.com/gabime/spdlog.git]  
-  
+  构建库:premake 来自premake的premake-core项目[url =https://github.com/premake/premake-core.git]  
+
 Add a new line commit in VsCode.  
 Test Markdown syntax for line breaks//"空格空格回车"  Set as a heading level//"井号空格"
 alt+shift+stay_Click ->框选  
@@ -67,7 +68,7 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                               Hello Learn Hazel !  
                               Hazel Engine is being updated !Hello Learn Hazel !  
                               Hazel Engine is being updated !Hello Learn Hazel !  
-                              Hazel Engine is being updated !Hello Learn Hazel !...  
+                              Hazel Engine is being updated !Hello Learn Hazel !...    
                   21:37->关于git的一些使用：创建.gitignore,使其提交时忽略：.vs/, bin/,bin-int/ 三个文件夹，和*.user等用户文件  
                      
 [ ] 6_日志:     为什么引入:可以使知道 1.消息来源, 2.严重程度 ->这就需要一个string_format函数,即需要明确 字符串格式 -> 所以引入库 spdlog  
@@ -94,35 +95,53 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                   20:05-> 设置日志级别 s_CoreLogger->set_level(spdlog::level::trace);  
                   21:46->在Hazle.h中包含#include "Hazel/Log.h"  
                   22:02->调试错误(因为the cherno没有及时更新Hazel.dll)  
-                  22:29->在EntryPoint.h中使用 	 Hazel::Log::Init(); 
-	                                          Hazel::Log::GetCoreLogger()->warn("Initialized log !");
-	                                          Hazel::Log::GetClientLogger()->info("Hello App !");  
+                  22:29->在EntryPoint.h中使用 	 Hazel::Log::Init();  
+	                                          Hazel::Log::GetCoreLogger()->warn("Initialized log !");  
+	                                          Hazel::Log::GetClientLogger()->info("Hello App !");    
              ...: 注释掉Application.cpp中//printf("Hello Learn Hazel !\nHazel Engine is being updated !"); 以免刷屏后推掉开始的log信息.  
              ...: 成功运行,成功应输出: 
-                              [10:46:47] HAZEL:Initialized log ! (文本应是黄色)
-                              [10:46:47] APP:Hello App !(文本应是绿色)
-                              Hello Learn Hazel !
-                              Hazel Engine was started !  
+                              [10:46:47] HAZEL:Initialized log ! (文本应是黄色)  
+                              [10:46:47] APP:Hello App !(文本应是绿色)  
+                              Hello Learn Hazel !  
+                              Hazel Engine was started !    
                   23:16->创建宏 -> 替换 Hazel::Log::GetCoreLogger() 如在Log.g中定义: // Core log macros
                                         #define HZ_CORE_TRACE(...)	::Hazel::Log::GetCoreLogger()->trace(__VA_ARGS__)  
                   26:06->在定义宏后,EntryPoint.h中用宏替换掉Hazel::Log::GetCoreLogger() ->变为:  
-                                    	Hazel::Log::Init();
-	                                    HZ_CORE_WARN("Initialized log !");
-	                                    HZ_CLIENT_INFO("Hello App !");
-	                                    int a =5;
-	                                    HZ_INFO("Hello! Var={0}",a);
-	                                    printf("Hello Learn Hazel !\nHazel Engine was started !\n");  
+                                    	Hazel::Log::Init();  
+	                                    HZ_CORE_WARN("Initialized log !");  
+	                                    HZ_CLIENT_INFO("Hello App !");  
+	                                    int a =5;  
+	                                    HZ_INFO("Hello! Var={0}",a);  
+	                                    printf("Hello Learn Hazel !\nHazel Engine was started !\n");    
               ...: 注: 在上一次提交中，Log.h中 HZ_CLIENT_...没有大写，本次提交整正  
-              ...: 成功运行,成功应输出: [11:24:03] HAZEL:Initialized log !
-                                      [11:24:03] APP:Hello App !
-                                      [11:24:03] APP:Hello! Var=5
-                                      Hello Learn Hazel !
-                                      Hazel Engine was started !   
+              ...: 成功运行,成功应输出: [11:24:03] HAZEL:Initialized log !  
+                                      [11:24:03] APP:Hello App !  
+                                      [11:24:03] APP:Hello! Var=5  
+                                      Hello Learn Hazel !  
+                                      Hazel Engine was started !     
                   26:52->补充说明:建议从发行版中剔除CoreLog->用:  
                   //if dist build  
                   #define HZ_CORE_INFO  
-                                  
-                        
+[ ] 7_premake: 使用项目生成器,而非手动  
+                  04:55->开始 使用premake来设置 Hazle  
+                  05:26->查看premake和其版权声明(需要版权声明被保留),premake项目链接: https://github.com/premake/premake-core.git  
+                  05:39->去Release下载premake.exe,如在视频中The cherno所下载的Premake 5.0 alpha 13  
+                  06:22->在外层Learn_Hazel中再创建一个vendor,不同于内层Learn_Hazel下的vendor(只包含用于Hazel的部分),在外层的vendor适用于全局 -> 将premake5.exe和LICENSE.txt复制到Learn_Hazel\vendor\bin\premake  
+                  07:36->在Wiki中查看如何使用  
+                  09:08->创建premake5.lua
+                  12:58->关于标准(Token),去Wiki中搜索如何使用  
+                  18:57->Turns out you can instead write systemversion "latest"  
+                  20:30->关于postbuildcommands指令操作(去Wiki上查例子)  
+                ...: 弹幕备注:  
+{COPY}这个指令现在好像已经弃用了，取而代之的是{COPYDIR}，语法是类似的。  
+COPY不可用，需要改成COPYFILE并且在复制前创建sandbox   ("{MKDIR} ../bin/" .. outputdir .. "/Sandbox"),  
+beta版本的copy会显示创建文件夹失败，可以使用mkdir手动创建文件夹  
+                  23:11->关于MT(多线程运行时库)  
+                  26:31->使用premake构建  
+                  27:25->the cherno 将之前漏掉的includedirs补上了  
+                  29:05->将Sandbox再次设置为启动项目的这一步是有意义的，不要忽略(来自弹幕)  
+
+
             
                   
 
