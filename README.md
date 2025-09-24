@@ -8,9 +8,13 @@ To avoid misunderstandings, I would like to reiterate that this record is mostly
 # Original Project(原始项目): The original Hazel game engine can be found at: https://github.com/TheCherno/Hazel (原始的Hazel游戏引擎可以在以下地址找到：https://github.com/TheCherno/Hazel)  
 ## License(许可证)
 This project is licensed under the Apache License, Version 2.0. See the LICENSE file for details. (本项目根据 Apache 许可证第 2.0 版进行许可。详细信息请参阅 LICENSE 文件。)  
-
+### 第三方库引用声明  
+  额外鸣谢在引擎学习中所使用的第三方库作者:  
+  日志系统引用库 来自 gabime的spdlog项目[url = https://github.com/gabime/spdlog.git]  
+  
 Add a new line commit in VsCode.  
 Test Markdown syntax for line breaks//"空格空格回车"  Set as a heading level//"井号空格"
+alt+shift+stay_Click ->框选  
 ### Learning objectives(学习目标):  
 # The Cherno's Game Engine Tutorial (The Cherno的游戏引擎教程):  
 YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT>  
@@ -65,7 +69,45 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                               Hazel Engine is being updated !Hello Learn Hazel !...  
                   21:37->关于git的一些使用：创建.gitignore,使其提交时忽略：.vs/, bin/,bin-int/ 三个文件夹，和*.user等用户文件  
                      
+[ ] 6_日志:     为什么引入:可以使知道 1.消息来源, 2.严重程度 ->这就需要一个string_format函数,即需要明确 字符串格式 -> 所以引入库 spdlog  
+                  05:47->下载 spdlog 跳转链接:https://github.com/gabime/spdlog.git  
+                  06:07->查看示例  
+                  06:42->关于MIT许可证 -> {对开源协议不懂,跳转到相关教程:  
+      【常见的开源许可证及主要区别（包括GPL许可证，Apache许可证，BSD许可证，MIT许可证，Mozilla许可证，MulanPSL许可证）】https://www.bilibili.com/video/BV1KW4y1r7rX?vd_source=19057ea4478296c5eac97eb7dcf4e71e  
+      08:50正式开始介绍 【MIT、WTFPL协议】https://www.bilibili.com/video/BV1Ch4y1z784?vd_source=19057ea4478296c5eac97eb7dcf4e71e  
+      }  
+                  07:42->选择构建系统: 1.CMake, 2.Premake 等 以及或者使用: git submodule  
+                  10:05->此处应该添加跳转链接:关于git子模块的视频  
+                  10:26->使用git submodule add 加目标库链接 加存放地址: Hazel/vendor/spdlog (命令: git submodule add https://github.com/gabime/spdlog.git Learn_Hazel/vendor/spdlog)  
+      ...: 成功会出现一个 .gitmodules 文件  
+                  11:52->添加地址到附加包含目录-> (right_Click: Learn_Hazel -> Properties ->C/C++ -> General -> Additional Include Directories : $(SolutionDir)Learn_Hazel\vendor\spdlog\include; , right_Click -> Sandbox -> Properties -> C/C++ -> General -> Additional Include Directories: $(SolutionDir)Learn_Hazel\src;$(SolutionDir)Learn_Hazel\vendor\spdlog\include;)   
+                  13:23->改变第三方库的API,换成HAZEL_API,方便后续变更库->使在不改变客户端代码的情况下切换  
+                  14:17->所以需要创建一个 日志类 ->包含spdlog-> 调用静态函数 (基本就是搞 包装器)  
+                  14:28->实现 日志类 (Class Log)  
+                  15:38->在Log.h中引入spdlog/spdlog.h  
+                  17:00->创建: static void Init(); inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; } inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
+                  17:34->要包含#include <memory> 这样可以使用头指针  
+                  18:00->将std::shared_ptr < spdlog::logger > s_CoreLogger;非静态 添加static 变成静态，因为上面引用为静态  
+                  19:00->Init() spdlog::set_pattern("%^[%T] %n:%v%$"); ->设置消息时间戳，日志名等  
+                  19:29->参考https://github.com/gabime/spdlog 中的Usage samples 编写void Log::Init(){};  
+                  20:05-> 设置日志级别 s_CoreLogger->set_level(spdlog::level::trace);  
+                  21:46->在Hazle.h中包含#include "Hazel/Log.h"  
+                  22:02->调试错误(因为the cherno没有及时更新Hazel.dll)  
+                  22:29->在EntryPoint.h中使用 	 Hazel::Log::Init(); 
+	                                          Hazel::Log::GetCoreLogger()->warn("Initialized log !");
+	                                          Hazel::Log::GetClientLogger()->info("Hello App !");  
+             ...: 注释掉Application.cpp中//printf("Hello Learn Hazel !\nHazel Engine is being updated !"); 以免刷屏后推掉开始的log信息.  
+             ...: 成功运行,成功应输出: 
+                              [10:46:47] HAZEL:Initialized log ! (文本应是黄色)
+                              [10:46:47] APP:Hello App !(文本应是绿色)
+                              Hello Learn Hazel !
+                              Hazel Engine was started !  
 
+            
+                  
+
+		
+                  
 
 
 
