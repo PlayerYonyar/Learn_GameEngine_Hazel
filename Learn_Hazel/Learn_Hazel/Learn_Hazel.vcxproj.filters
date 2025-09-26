@@ -18,6 +18,11 @@
       <Filter>Hazel</Filter>
     </ClInclude>
     <ClInclude Include="src\Test.h" />
+    <ClInclude Include="src\Hazel\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Hazel\Events\Event.h" />
+    <ClInclude Include="src\Hazel\Events\KeyEvent.h" />
+    <ClInclude Include="src\Hazel\Events\MouseEvent.h" />
+    <ClInclude Include="src\Hazel\Events\WindowResizeEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
