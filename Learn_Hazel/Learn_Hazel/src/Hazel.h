@@ -1,6 +1,8 @@
 #pragma once
 
-#include<stdio.h>	
+#include "hzpch.h"//prcompiled header(预编译头文件)
+
+//#include<stdio.h>	
 
 //for use by Hazel applications ->这是为了Hazel应用程序写的
 #include "Application.h"

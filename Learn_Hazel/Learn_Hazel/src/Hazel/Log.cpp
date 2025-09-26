@@ -1,4 +1,7 @@
 #include "Log.h"
+#include "hzpch.h"//prcompiled header(预编译头文件)
+
+
 
 #include "spdlog/sinks/stdout_color_sinks.h"
 

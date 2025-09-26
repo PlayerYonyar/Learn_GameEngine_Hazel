@@ -1,9 +1,9 @@
 ﻿//ApplocationEvent.h:
 #pragma once
-//#include "hzpch.h"//预编译头文件
+#include "hzpch.h"//prcompiled header(预编译头文件)
 #include "Event.h"
 
-#include <sstream>
+//#include <sstream>
 
 namespace Hazel
 {

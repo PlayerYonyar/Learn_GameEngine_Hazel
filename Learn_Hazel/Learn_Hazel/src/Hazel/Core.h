@@ -1,4 +1,7 @@
 #pragma once
+#include "hzpch.h"//prcompiled header(预编译头文件)
+
+
 #ifdef HZ_PLATFORM_WINDOWS
 #ifdef HZ_BUILD_DLL
 	#define HAZEL_API __declspec(dllexport)

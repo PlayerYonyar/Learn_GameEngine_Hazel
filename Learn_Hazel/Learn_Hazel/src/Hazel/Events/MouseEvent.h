@@ -1,9 +1,11 @@
 ﻿//MosuseEvent.h:
 #pragma once
-//#include "hzpch.h"//预编译头文件
+#include "hzpch.h"//prcompiled header(预编译头文件)
+
+
 #include "Event.h"
 
-#include <sstream>
+//#include <sstream>
 
 /*编程规范：
 公开的先写，

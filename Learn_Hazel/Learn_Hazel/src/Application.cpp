@@ -1,5 +1,7 @@
-#include "Application.h"
+//Application.cpp:
+#include "hzpch.h"//prcompiled header(预编译头文件)
 
+#include "Application.h"
 
 #include "Hazel/Events/ApplicationEvent.h"
 #include "Hazel/Log.h"

@@ -1,4 +1,7 @@
 #pragma once
+#include "hzpch.h"//prcompiled header(预编译头文件)
+
+
 #ifdef HZ_PLATFORM_WINDOWS
 extern Hazel::Application* Hazel::CreateApplication();
 int main(int argc, char** argv)

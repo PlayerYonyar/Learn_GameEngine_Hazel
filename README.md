@@ -1,10 +1,10 @@
 # Records of learning the game engine_Hazel  
 # (学习 游戏引擎_榛子 的记录)
-Description: This is a personal log of learning a game engine, with the aim of recreating the Hazel game engine developed by The Cherno.  
-(描述：这是一个学习游戏引擎的个人记录，目标是复现由 The Cherno 编写的 Hazel 游戏引擎。)  
+Description: `This is a personal log of learning a game engine`, with the aim of recreating the Hazel game engine developed by The Cherno.  
+(描述：`这是一个学习游戏引擎的个人记录`，目标是复现由 The Cherno 编写的 Hazel 游戏引擎。)  
 To avoid misunderstandings, I would like to reiterate that this record is mostly machine-translated.In the text, including but not limited to: the Chinese or English parts, the expressions may not be accurate.  
 (为了避免误会,再次声明,且该记录多为机翻.文中，包括但不限于：中文或英文部分，表达的可能不准确。)
-# This is a record of learning the Hazel game engine, The original creator of the Hazel game engine is The Cherno. (这是学习Hazel游戏引擎的记录，Hazel游戏引擎的原始创建者是The Cherno。)
+# This is a record of learning the Hazel game engine, The original creator of the Hazel game engine is `The Cherno`. (这是学习Hazel游戏引擎的记录，Hazel游戏引擎的`原始创建者是The Cherno`。)
 # `Original Project(原始项目)`: The original Hazel game engine can be found at: https://github.com/TheCherno/Hazel (原始的Hazel游戏引擎可以在以下地址找到：https://github.com/TheCherno/Hazel)  
 ## License(许可证)
 This project is licensed under the Apache License, Version 2.0. See the LICENSE file for details. (本项目根据 Apache 许可证第 2.0 版进行许可。详细信息请参阅 LICENSE 文件。)  
@@ -54,7 +54,7 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                   05:42->写一个Run,插入循环,控制程序运行  
                   05:57->将虚构方法变为虚方法,因为这个类会被Sandbox程序继承  
                   06:17->必须根据dll的写入位置来设置__declspec(dllexport)或declspec(dllimport)  
-                  07:01->在Core.h中定义平台,免去繁琐的__declspec(dllexport)或declspec(dllimport),替换为HAZEL_API,然后定义平台,(right_Click: Learn_Hazel -> Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;HZ_BUILD_DLL; ,right_Click: Sandbox ->Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;)   
+                  07:01->在Core.h中定义平台,免去繁琐的__declspec(dllexport)或declspec(dllimport),替换为HAZEL_API,然后定义平台,(`right_Click: Learn_Hazel -> Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;HZ_BUILD_DLL; ,right_Click: Sandbox ->Properties ->从C\C++ ->Preprocessor-> Preprocessor Definitions:HZ_PLATFORM_WINDOWS;`)   
                   09:29->代码转折  
                   10:58->设置包含目录(right_Click -> Sandbox -> Properties -> C/C++ -> General -> Additional Include Directories: $(SolutionDir)Learn_Hazel\src; ) ->这样包含时用不用叫角号都可以  
                   11:45->创建Sandbx类  
@@ -291,8 +291,63 @@ Hazel Engine was started !
 [11:42:06] APP:WindowResizeEvent: 1280, 720
 
 ```
-10.      预编译头:    
+10.预编译头:    
   * 00:48-> About Precompiled Headers:
     * 关于precompiledHeaders更详细的视频介绍: https://www.youtube.com/watch?v=eSI4wctZUto
       * Yuotube->8:37->预编译头应只包含:比如说，标准模板库，windows API调用之类的,你不会更改的外部文件.
       * Yuotube->12:20->正式开始演示
+  * 01:07->正式开始代码:
+  * 01:56->make a C++ file called hzpch.cpp
+  * 02:47->We could make a precompiled header be separate for each platform
+```C++
+#ifdef HZ_PLATFORM_WINDOWS
+#include <Windows.h>
+#endif
+```
+  * 04:33->write pchheader...in `premake5.lua`
+```Lua
+project "Learn_Hazel"
+    location "Learn_Hazel"
+    kind "SharedLib"
+    language "C++"
+
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
+
+    pchheader "hzpch.h"
+    pchsource "Learn_Hazel/src/hzpch.cpp"
+```
+
+  * 05:16->相当于在VS里操作  
+`right_Click: hzpch.cpp -> Properties ->从C\C++ -> Precompiled Headers ->Precompiled Header :Create(/Yc) ;`  
+`right_Click: Learn_Hazel -> Properties ->从C\C++ -> Precompiled Headers ->Precompiled Header :Use(/Yu) ;`  
+`right_Click: Learn_Hazel -> Properties ->从C\C++ -> Precompiled Headers ->Precompiled Header File :hzpch.h ;`
+ * 07:37->在每一个文件第一个包含`hzpch.h'
+```C++
+//hzpch.h:
+#pragma once
+
+#include <iostream>
+#include <memory>// For std::shared_ptr
+#include <utility>
+#include <algorithm>
+#include <functional>
+
+#include <string>
+#include <sstream>
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+
+#include "Hazel/Log.h"
+
+#ifdef HZ_PLATFORM_WINDOWS
+#include <Windows.h>
+#endif
+```
+11.窗口抽象 和 GLFW :    
+  * 00:00->
+
+
+
+

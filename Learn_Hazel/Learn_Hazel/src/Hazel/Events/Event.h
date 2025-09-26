@@ -1,11 +1,11 @@
 ﻿//Event.h:
 #pragma once
-//#include "hzpch.h"//预编译头文件
+#include "hzpch.h"//prcompiled header(预编译头文件)
 
 #include"Hazel/Core.h"
 
-#include <string>
-#include <functional>
+//#include <string>
+//#include <functional>
 
 namespace Hazel
 {

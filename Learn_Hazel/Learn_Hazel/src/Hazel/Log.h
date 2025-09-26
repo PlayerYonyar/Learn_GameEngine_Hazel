@@ -1,6 +1,8 @@
 #pragma once
+#include "hzpch.h"//prcompiled header(预编译头文件)
 
-#include <memory>
+
+//#include <memory>
 #include "Core.h"
 
 #include "spdlog/spdlog.h"
