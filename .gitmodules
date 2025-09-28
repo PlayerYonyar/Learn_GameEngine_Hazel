@@ -1,3 +1,6 @@
 [submodule "Learn_Hazel/Learn_Hazel/vendor/spdlog"]
 	path = Learn_Hazel/Learn_Hazel/vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "Learn_Hazel/Learn_Hazel/vendor/GLFW"]
+	path = Learn_Hazel/Learn_Hazel/vendor/GLFW
+	url = https://github.com/TheCherno/glfw.git
