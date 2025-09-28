@@ -37,6 +37,8 @@
     </ClInclude>
     <ClInclude Include="src\Test.h" />
     <ClInclude Include="src\hzpch.h" />
+    <ClInclude Include="src\Hazel\Window.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
@@ -45,5 +47,6 @@
     </ClCompile>
     <ClCompile Include="src\Test.cpp" />
     <ClCompile Include="src\hzpch.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
 </Project>

@@ -10,6 +10,12 @@ workspace "Learn_Hazel"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Learn_Hazel/vendor/GLFW/include"
+
+--group "Dependencies"
+include "Learn_Hazel/vendor/GLFW"
+
 project "Learn_Hazel"
     location "Learn_Hazel"
     kind "SharedLib"
@@ -31,8 +37,15 @@ includedirs
     "%{prj.name}/src",
     "%{prj.name}/vendor/spdlog/include",
 
+    "%{IncludeDir.GLFW}",
+
 }
 
+links
+{
+    "GLFW",
+    "opengl32.lib",
+}
 
 filter "system:windows"
     cppdialect "C++17"

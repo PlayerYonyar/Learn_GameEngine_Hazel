@@ -49,7 +49,7 @@ namespace Hazel
 #define HZ_FATAL(...)		::Hazel::Log::GetClientLogger()->fatal(__VA_ARGS__)
 
 //if dist build  
-#define HZ_CORE_INFO
+//#define HZ_CORE_INFO
 
 //#include "spdlog/spdlog.h"
 

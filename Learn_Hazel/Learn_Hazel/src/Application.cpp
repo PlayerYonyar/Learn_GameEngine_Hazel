@@ -9,11 +9,13 @@ namespace Hazel
 {
 	Application::Application()
 	{
+		m_Window = std::unique_ptr<Window>(Window::Create());
 	}
 
 	Application::~Application()
 	{
 	}
+
 	void Application::Run() 
 	{
 
@@ -31,9 +33,10 @@ namespace Hazel
 			HZ_TRACE("{}", e.ToString());
 		}
 
-		while (true) 
+		while (m_Running)
 		{ 
 			//printf("Hello Learn Hazel !\nHazel Engine is being updated !"); 
+			m_Window->OnUpdate();
 		};
 	}
 }

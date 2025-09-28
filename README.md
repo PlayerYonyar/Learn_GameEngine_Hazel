@@ -13,7 +13,7 @@ This project is licensed under the Apache License, Version 2.0. See the LICENSE 
   额外鸣谢在引擎学习中所使用的第三方库作者:  
   1. 日志系统引用库 来自 gabime的spdlog项目[url = https://github.com/gabime/spdlog.git]  
   2. 构建库:premake 来自premake的premake-core项目[url =https://github.com/premake/premake-core.git]  
-
+  3. 图形库:GLFW 
 小贴士:在vs中alt+shift+stay_Click ->框选  这种快捷键很好用.
 ### Learning objectives(学习目标):  
 # The Cherno's Game Engine Tutorial (The Cherno的游戏引擎教程):  
@@ -24,7 +24,7 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
 2. ~No code, skip(无代码,跳过)
 3. ~No code, skip(无代码,跳过),  
  Among them are the 3 design levels: timestamp 20:50(其中3设计层级:时间戳 20:50).  
-4. 项目设置:  
+1. 项目设置:  
 * [ ] 03:22->创建仓库和声明(Apache License 2.0)  
       {对开源协议不懂,跳转到相关教程:  
       【常见的开源许可证及主要区别（包括GPL许可证，Apache许可证，BSD许可证，MIT许可证，Mozilla许可证，MulanPSL许可证）】https://www.bilibili.com/video/BV1KW4y1r7rX?vd_source=19057ea4478296c5eac97eb7dcf4e71e  
@@ -48,7 +48,7 @@ YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATf
                   21:12->构建(先构建Learn_Hazel 然后将Learn_Hazel.dll(Learn_GameEngine_Hazel\Learn_Hazel\bin\Debug-x64\Learn_Hazel)移到Sandbox输出exe里(Learn_GameEngine_Hazel\Learn_Hazel\bin\Debug-x64\Sandbox),然后构建Sandbox)->成功后终端输出Hello...  
       !!!: 出现了2个问题:1.项目设置dll时未采用All Configurations, 2. 命名空间的使用你在调用   Print   函数时，使用了   Learn_Hazel:Print()  ，这是错误的。在 C++ 中，命名空间的正确使用方式是   Learn_Hazel::Print()  ，其中   ::   是作用域解析运算符。
   
-5. 入口点:  
+1. 入口点:  
 * [ ] 02:42->解释上一章代码  
                   04:48->创建c++类:Application,获取Application 类,并将其放入命名空间  
                   05:42->写一个Run,插入循环,控制程序运行  
@@ -346,8 +346,105 @@ project "Learn_Hazel"
 #endif
 ```
 11.窗口抽象 和 GLFW :    
-  * 00:00->
+  * 03:32->跳转到关于`GLFW`的链接: 
+    1. Youtube: https://www.youtube.com/watch?v=W3gAzLwfIP0&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2
+    2. Bilibi(中文翻译,译者:SPEAUTY): 【【双语】【TheCherno】OpenGL】https://www.bilibili.com/video/BV1Ni4y1o7Au?vd_source=19057ea4478296c5eac97eb7dcf4e71e
+         * 弹幕:GLFW是可以绑定到DX上的，VK也可以
+  * 08:25->About GLFW/premake5.lua
+  * 09:29->` git submodule add https://github.com/TheCherno/glfw.git Learn_Hazel/vendor/GLFW`
+  * 09:52->对于 `GLFW` ,需要自己在最上级的 premake5.lua中增加... 通过 `git difftool --dir-diff`来查看tutorial_10 与 tutorial_11 的代码对比 
+```Lua
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "Learn_Hazel/vendor/GLFW/include"
 
+--group "Dependencies"
+include "Learn_Hazel/vendor/GLFW"
+```
+ * 11:22->继续,关于最上级的 Premake5.lua
+```Lua
+includedirs
+{
+    "%{prj.name}/src",
+    "%{prj.name}/vendor/spdlog/include",
 
+    "%{IncludeDir.GLFW}",
 
+}
 
+links
+{
+    "GLFW",
+    "opengl32.lib",
+}
+```
+ * 12:47->展示完整的最上级的premake5.lua
+ * 14:12->通过`GenerateProject.bat`重新生成,以包含GLFW
+ * 15.21->关于Window类: Window.h
+ * 15:31->关于Application.h
+ * 17:24->关于Platform/Windows/WindowsWindow类
+ * 19:34->在`WindowsWindow.cpp`中的`Shutdown()`添加 glfwDestroyWindow(m_Window);
+```C++
+	void WindowsWindow::Shutdown()
+	{
+		glfwDestroyWindow(m_Window);
+	}
+```
+ * 19:40->在`WindowsWindow.cpp`中的`~WindowsWindow()`添加 Shutdown();
+```C++
+	WindowsWindow::~WindowsWindow()
+	{
+		Shutdown();
+	}
+```
+ * 20:21->关于Core.h -> 添加 `断言` !
+ * 22:00->对回调函数的解释
+ * 22:24->关于windowsWindow.cpp
+ * 23:07->关于垂直同步函数: `SetVSync(bool enabled)`
+ * 23:57=>修改Application类
+ * 24:03->对Application.h 添加 private:
+```C++
+private:
+    std::unique_ptr<Window> m_Window;
+```
+ * 24:24->对Application.cpp 添加 :`m_Window = std::unique_ptr<Window>(Window::Create());`
+```C++
+	Application::Application()
+	{
+		m_Window = std::unique_ptr<Window>(Window::Create());
+	}
+```
+ * 25:06->对Application.h 添加 :
+```C++
+private:
+    bool m_Running = true;
+```
+ * 25:33->对Application.cpp 添加 :
+```C++
+		while (m_Running)
+		{ 
+			m_Window->OnUpdate();
+		};
+```
+ * 25:55->创建窗口以及显示窗口信息
+    * ...: 成功运行,成功应输出: 
+    * 一个黑窗口,
+    * 一个终端:
+```C++
+[20:23:39] HAZEL:Initialized log !
+[20:23:39] APP:Hello App !
+[20:23:39] APP:Hello! Var=5
+Hello Learn Hazel !
+Hazel Engine was started !
+[20:23:39] HAZEL:Creating window Hazel Engine (1280, 720)
+[20:23:39] APP:WindowResizeEvent: 1280, 720
+[20:23:39] APP:WindowResizeEvent: 1280, 720
+```
+ * 26:16->关于Application.cpp -> 包含glfw3.h
+ * 26:46->通过`glfw`创建一个粉红色窗口
+ * 27:45->通过 `git difftool --dir-diff`来查看tutorial_10 与 tutorial_11 的代码对比,看看是否漏掉了什么.(因为`日志`不会改变,所以把它添加到了`hzpch.h`)
+
+12.窗口事件:  
+ * 02:14-> <span style ="color:blue;font-size:40px">正式开始</span> 
+**加粗字体**
+<iframe src="player.bilibili.com/player.html? aid=770027221&bvid=BV1Cr4y137os&cid=748588252&=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="500px"></iframe>
