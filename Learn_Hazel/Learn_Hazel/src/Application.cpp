@@ -3,7 +3,7 @@
 
 #include "Application.h"
 
-#include "Hazel/Events/ApplicationEvent.h"
+
 #include "Hazel/Log.h"
 
 #include "GLFW/glfw3.h"
@@ -24,6 +24,11 @@ namespace Hazel
 
 	void Application::OnEvent(Event& e)
 	{
+		//调度器调度，模板匹配
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));//处理窗口关闭事件
+
+
 		HZ_CORE_INFO("{0}",e.ToString());
 	}
 
@@ -52,6 +57,12 @@ namespace Hazel
 
 			m_Window->OnUpdate();
 		};
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false; //设置运行状态为false，退出应用程序
+		return true; //返回true表示事件已被处理
 	}
 }
 

@@ -7,6 +7,9 @@
 #include "Hazel/Core.h"	
 
 #include "Hazel/Events/Event.h"
+
+#include "Hazel/Events/ApplicationEvent.h"
+
 #include "Hazel/Window.h"
 
 namespace Hazel
@@ -22,6 +25,9 @@ namespace Hazel
 		void OnEvent(Event& e);
 
 	private:
+		//事件处理函数
+		bool OnWindowClose(WindowCloseEvent& e);
+
 		std::unique_ptr<Window> m_Window; //使用智能指针管理窗口资源
 		bool m_Running = true;
 	};

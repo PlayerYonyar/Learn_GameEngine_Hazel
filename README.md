@@ -625,6 +625,9 @@ glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int a
  * 鼠标点击,键盘按键.滚动,调整窗口大小.Close事件
  * 18:03->实现Close调度器:
  * 20:55->报错
+ * 21:00->修正报错-->WindowClose正常运行
+   * `#include "Hazel/Events/ApplicationEvent.h"`的位置错误
+   * 将`#include "Hazel/Events/ApplicationEvent.h"`从Application.cpp剪切到 `Application.h`中
 13. Layers:
  * 07:57->正式开始:
 
