@@ -2,9 +2,9 @@
 #include "hzpch.h"//预编译头文件
 #include "WindowsWindow.h"
 
-//#include "Hazel/Events/ApplicationEvent.h"
-//#include "Hazel/Events/MouseEvent.h"
-//#include "Hazel/Events/KeyEvent.h"
+#include "Hazel/Events/ApplicationEvent.h"
+#include "Hazel/Events/MouseEvent.h"
+#include "Hazel/Events/KeyEvent.h"
 //#include <Glad/glad.h>
 //#include <GLFW/glfw3.h>
 
@@ -12,10 +12,10 @@ namespace Hazel
 {
 	static bool s_GLFWInitialized = false;
 
-	//static void GLFWErrorCallback(int error, const char* description)
-	//{
-	//	HZ_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
-	//}
+	static void GLFWErrorCallback(int error, const char* description)
+	{
+		HZ_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
+	}
 	//为什么这个不用lambda，而是写在外面;我觉得这里不用lambda 写在外面是为了写成static func
 
 
@@ -54,7 +54,7 @@ namespace Hazel
 			int success = glfwInit();
 			HZ_CORE_ASSERT(success, "Could not initialize GLFW!");
 			//HZ_CORE_ASSERT(glfwInit(), "Could not initialize GLFW!");
-			//glfwSetErrorCallback(GLFWErrorCallback);
+			glfwSetErrorCallback(GLFWErrorCallback);
 			/*
 			glfwSetErrorCallback([](int error, const char* description) {
 				HZ_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
@@ -78,11 +78,11 @@ namespace Hazel
 
 		//int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		//HZ_CORE_ASSERT(status, "Failed to initialize Glad!")
-		
+
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
-		/*
+
 		//Set GLFW callbacks
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -125,14 +125,6 @@ namespace Hazel
 				}
 			});
 
-		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode)
-			{
-				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-				KeyTypedEvent event(keycode);
-				data.EventCallback(event); // Call the event callback
-
-			});
-
 		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -166,6 +158,16 @@ namespace Hazel
 				MouseMovedEvent event((float)xPos, (float)yPos); // Create a mouse moved event
 				data.EventCallback(event); // Call the event callback
 			});
+
+		/*
+		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode)
+			{
+				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+				KeyTypedEvent event(keycode);
+				data.EventCallback(event); // Call the event callback
+
+			});
+
 		*/
 	}
 

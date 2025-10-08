@@ -13,7 +13,7 @@ This project is licensed under the Apache License, Version 2.0. See the LICENSE 
   额外鸣谢在引擎学习中所使用的第三方库作者:  
   1. 日志系统引用库 来自 gabime的spdlog项目[url = https://github.com/gabime/spdlog.git]  
   2. 构建库:premake 来自premake的premake-core项目[url =https://github.com/premake/premake-core.git]  
-  3. 图形库:GLFW 
+  3. 图形库:GLFW  
 小贴士:在vs中alt+shift+stay_Click ->框选  这种快捷键很好用.
 ### Learning objectives(学习目标):  
 # The Cherno's Game Engine Tutorial (The Cherno的游戏引擎教程):  
@@ -172,7 +172,7 @@ beta版本的copy会显示创建文件夹失败，可以使用mkdir手动创建�
                   08:01->关于缓冲事件系统  
 9.  事件系统:    
   * 03:40->正式开始:
-  * 04:43->关于预编译头文件(引擎越往下发展,越难集成到预编译头文件.)  
+  * 04:43->关于预编译头文件(引擎越往下发展,越难集成到预编译头文件.)->所有 `.cpp`文件都需要在第一个添加`pch` !  
   * 07:24->关于事件类型:  
 ```C++
 	enum class EventType
@@ -441,10 +441,193 @@ Hazel Engine was started !
 [20:23:39] APP:WindowResizeEvent: 1280, 720
 ```
  * 26:16->关于Application.cpp -> 包含glfw3.h
+ * 26:27->关于Application.cpp ->:
+```C++
+		while (m_Running)
+		{ 
+			glClearColor(1, 0, 1, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			m_Window->OnUpdate();
+		};
+```
  * 26:46->通过`glfw`创建一个粉红色窗口
+    * ...: 成功运行,成功应输出: 
+    * 一个粉窗口,
+    * 一个终端:
+ * 27:27->为什么有一个`SetEventCallback()`函数的原因 -> APP通过Hazel引擎来通知Windows?
  * 27:45->通过 `git difftool --dir-diff`来查看tutorial_10 与 tutorial_11 的代码对比,看看是否漏掉了什么.(因为`日志`不会改变,所以把它添加到了`hzpch.h`)
 
 12.窗口事件:  
- * 02:14-> <span style ="color:blue;font-size:40px">正式开始</span> 
-**加粗字体**
-<iframe src="player.bilibili.com/player.html? aid=770027221&bvid=BV1Cr4y137os&cid=748588252&=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="500px"></iframe>
+ * 02:14->正式开始:
+ * 02:18->关于Application.cpp 
+ * 02:50->修改Application.cpp -> m_Window ->SetEventCallback()
+ * 03:02->修改Application.h -> void OnEvent(Event& e);
+ * 03:19->修改Application.cpp ->
+```C++
+	void Application::OnEvent(Event& e)
+	{
+
+	}
+```
+ * 03:55->修改Application.cpp -> m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+```C++
+	Application::Application()
+	{
+		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+	}
+```
+ * 04:03->修改Application.cpp ->用
+```C++
+#define BIND_EVENT_FN(x) std::bind(&x,this, std::placeholders::_1)
+```
+ * 04:26->通过#define BIND_EVENT_FN(x)替换
+    * 弹幕:成员函数指针和 std::function 不兼容，std::function 期望一个可调用对象，所以成员函数指针需要使用 std::bind 创建一个新的可调用对象 
+```C++
+	m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+  //m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+```
+ * 05:10->
+```C++
+	void Application::OnEvent(Event& e)
+	{
+		HZ_CORE_INFO("{0}",e);
+	}
+```
+ * 05:23->在WindowsWindow.cpp添加:
+```C++
+		//Set GLFW callbacks 设置GLFW的回调函数
+		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			WindowResizeEvent event(width, height); // Create a resize event
+			data.EventCallback(event); // Call the event callback
+
+			});
+```
+ * 07:55->添加
+```C++
+#include "Hazel/Events/ApplicationEvent.h"
+#include "Hazel/Events/MouseEvent.h"
+#include "Hazel/Events/KeyEvent.h"
+```
+ * 08:59->添加
+```C++
+		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
+			{
+				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+				WindowCloseEvent event; // Create a close event
+				data.EventCallback(event); // Call the event callback
+			});
+```
+ * 09:35->添加 <- 弹幕: 先对 glfwSetKeyCallback 函数 Ctrl + F12 转到声明，然后对GLFWkeyfun F12进入声明
+```C++
+glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		//因为这个KeyCode是GLFW的，所以我们需要将它转换为Hazel的KeyCode,以便跨平台兼容
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		switch (action)
+		{
+		case GLFW_PRESS:
+		{
+			KeyPressedEvent event(key, 0); // Create a key pressed event
+			data.EventCallback(event); // Call the event callback
+			break;
+		}
+		case GLFW_RELEASE:
+		{
+			KeyReleasedEvent event(key); // Create a key released event
+			data.EventCallback(event); // Call the event callback
+			break;
+		}
+		case GLFW_REPEAT:
+		{
+			KeyPressedEvent event(key, 1); // Create a key pressed event with repeat count
+			data.EventCallback(event); // Call the event callback
+			break;
+		}
+		}
+	});
+  ```
+   * 11:57->添加
+```C++
+		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
+			{
+				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+				switch (action)
+				{
+				case GLFW_PRESS:
+				{
+					MouseButtonPressedEvent event(button); // Create a mouse button pressed event
+					data.EventCallback(event); // Call the event callback
+					break;
+				}
+				case GLFW_RELEASE:
+				{
+					MouseButtonReleasedEvent event(button); // Create a mouse button released event
+					data.EventCallback(event); // Call the event callback
+					break;
+				}
+				}
+			});
+```
+   * 13:46->添加
+```C++
+		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xOffset, double yOffset)
+			{
+				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+				MouseScrolledEvent event((float)xOffset, (float)yOffset); // Create a mouse scrolled event
+				data.EventCallback(event); // Call the event callback
+			});
+```
+   * 14:59->添加
+```C++
+		glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
+			{
+				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+				MouseMovedEvent event((float)xPos, (float)yPos); // Create a mouse moved event
+				data.EventCallback(event); // Call the event callback
+			});
+```
+   * 16:01->添加
+```C++
+	static void GLFWErrorCallback(int error, const char* description)
+	{
+		HZ_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
+	}
+```
+```C++
+			glfwSetErrorCallback(GLFWErrorCallback);
+
+```
+ * 17:14->Error: Build failed (错误: 构建失败) !!!
+     * 通过git log --oneline 查看版本-> git reset --hard 270bf9e 回退版本-> 通过VSCode的 `Open Changes`对比->逐步排查错误点->
+     * 关于`git reset`的使用方法和区别,跳转链接: 【【GeekHour】一小时Git教程】https://www.bilibili.com/video/BV1HM411377j?p=6&vd_source=19057ea4478296c5eac97eb7dcf4e71e 
+     * 发现:spdlog的使用方法与现版本 过时(冲突),需要将`,e`改成`,e.ToString()`:
+```C++
+	void Application::OnEvent(Event& e)
+	{
+		HZ_CORE_INFO("{0}",e.ToString());
+	}
+```
+
+ * 17:20->创建一个粉窗口,与事件的回调
+     *鼠标滚轮偏移???
+        * 在MouseEvent.h中`std::string ToString() const override`被注释掉了 -> 需要取消注释
+```C++
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "MouseScrolledEvent: " << m_XOffset << ", " << m_YOffset;
+			return ss.str();
+		}
+``` 
+ * 鼠标点击,键盘按键.滚动,调整窗口大小.Close事件
+ * 18:03->实现Close调度器:
+ * 20:55->报错
+13. Layers:
+ * 07:57->正式开始:
+
+15. ImGUI
+ * 02:28
+16. 

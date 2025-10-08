@@ -1,6 +1,6 @@
 //WindowsWindow.h:
 #pragma once
-#include "hzpch.h"//预编译头文件
+//#include "hzpch.h"//预编译头文件
 
 #include "Hazel/Window.h"
 

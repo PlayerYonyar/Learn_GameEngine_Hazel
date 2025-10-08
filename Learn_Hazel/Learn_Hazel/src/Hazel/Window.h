@@ -1,6 +1,6 @@
 //Window.h:
 #pragma once
-#include "hzpch.h"//预编译头文件
+//#include "hzpch.h"//预编译头文件
 #include "Core.h"
 #include "Events/Event.h"
 

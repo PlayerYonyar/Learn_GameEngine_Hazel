@@ -41,12 +41,12 @@ namespace Hazel
 		}
 		inline float GetXOffset() const { return m_XOffset; } //获取鼠标滚轮X偏移
 		inline float GetYOffset() const { return m_YOffset; } //获取鼠标滚轮Y偏移
-		//std::string ToString() const override
-		//{
-		//	std::stringstream ss;
-		//	ss << "MouseScrolledEvent: " << m_XOffset << ", " << m_YOffset;
-		//	return ss.str();
-		//}
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "MouseScrolledEvent: " << m_XOffset << ", " << m_YOffset;
+			return ss.str();
+		}
 		EVENT_CLASS_TYPE(MouseScrolled)
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	private:
