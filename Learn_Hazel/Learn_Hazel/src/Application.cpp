@@ -22,6 +22,16 @@ namespace Hazel
 	{
 	}
 
+	void Application::PushLayer(Layer* layer)
+	{
+		m_LayerStack.PushLayer(layer);
+	}
+
+	void Application::PushOverlay(Layer* layer)
+	{
+		m_LayerStack.PushOverlay(layer);
+	}
+
 	void Application::OnEvent(Event& e)
 	{
 		//调度器调度，模板匹配
@@ -29,7 +39,18 @@ namespace Hazel
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));//处理窗口关闭事件
 
 
-		HZ_CORE_INFO("{0}",e.ToString());
+		//HZ_CORE_INFO("{0}",e.ToString());
+
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		{
+			(*--it)->OnEvent(e);
+			//如果标记为已处理,就退出
+			if (e.m_Handled)
+			{
+				break;
+			}
+
+		}
 	}
 
 	void Application::Run() 
@@ -38,7 +59,6 @@ namespace Hazel
 		WindowResizeEvent e(1280, 720);
 		HZ_TRACE("{}", e.ToString());
 		//HZ_TRACE(e); //使用HZ_TRACE宏记录事件
-
 
 		if (e.IsInCategory(EventCategoryApplication))
 		{
@@ -54,6 +74,11 @@ namespace Hazel
 			//printf("Hello Learn Hazel !\nHazel Engine is being updated !"); 
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+			
+			for (Layer* layer : m_LayerStack)
+			{
+				layer->OnUpdate();
+			}
 
 			m_Window->OnUpdate();
 		};

@@ -630,7 +630,72 @@ glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int a
    * 将`#include "Hazel/Events/ApplicationEvent.h"`从Application.cpp剪切到 `Application.h`中
 13. Layers:
  * 07:57->正式开始:
+ * 08:02->git-diff展示修改
+ * 08:08->4个新文件
+    * Layer.h和Layer.cpp
+    * LayerStack.h 和 LayerStack.cpp
+ * 10:56->`LayerStack.h` 和 `LayerStack.cpp`
+```C++
+	Hazel::LayerStack::~LayerStack()
+	{
+		//遍历删除
+		for (Layer* layer : m_Layers)
+		{
+			delete layer;
+		}
+	}
+//由于只在删除层时删除栈,可能会内存泄漏,使用时,要注意!!!
+```
+ * 14:41->这里可以优化
+ * 14:48->在git-diff中,查看变更
+ * 16:29->Premake5.lua
+```Lua
+--在Hazel和Sandbox中添加 buildoptions "/MDd" 和 buildoptions "/MD"
+filter "configurations:Debug"
+    defines "HZ_DEBUG"
+    buildoptions "/utf-8"
+    buildoptions "/MDd"
+    symbols "On"
 
-15. ImGUI
+filter "configurations:Release"
+    defines "HZ_RELERASE"
+    buildoptions "utf-8"
+    buildoptions "/MD"
+    optimize "On"
+filter "configurations:Dist"
+    defines "HZ_DIST"
+    buildoptions "utf-8"
+    buildoptions "/MD"
+    optimize "On"
+```
+ * 18:45-> Sandbox.cpp
+ * 20:13-> 显示结果:
+```
+[21:54:22] HAZEL:Initialized log !
+[21:54:22] APP:Hello App !
+[21:54:22] APP:Hello! Var=5
+Hello Learn Hazel !
+Hazel Engine was started !
+[21:54:22] HAZEL:Creating window Hazel Engine (1280, 720)
+[21:54:22] APP:WindowResizeEvent: 1280, 720
+[21:54:22] APP:WindowResizeEvent: 1280, 720
+[21:54:24] HAZEL:MouseMovedEvent: 591, 1
+[21:54:24] APP:MouseMovedEvent: 591, 1
+[21:54:24] APP:ExampleLayer::Updete
+[21:54:24] HAZEL:MouseMovedEvent: 586, 4
+[21:54:24] APP:MouseMovedEvent: 586, 4
+[21:54:24] HAZEL:MouseMovedEvent: 580, 9
+[21:54:24] APP:MouseMovedEvent: 580, 9
+[21:54:24] APP:ExampleLayer::Updete
+[21:54:24] APP:ExampleLayer::Updete
+[21:54:24] HAZEL:MouseMovedEvent: 574, 14
+[21:54:24] APP:MouseMovedEvent: 574, 14
+[21:54:24] APP:ExampleLayer::Updete
+[21:54:24] HAZEL:MouseMovedEvent: 563, 22
+[21:54:24] APP:MouseMovedEvent: 563, 22
+```
+ * 20:27->在`Application.cpp` 中删除/注释 `HZ_CORE_INFO("{0}",e.ToString());`
+   * 使`MouseMovedEvent: 580, 9 `白和`APP:ExampleLayer::Updete`绿,
+1.  ImGUI
  * 02:28
-16. 
+2.  

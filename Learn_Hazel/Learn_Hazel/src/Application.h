@@ -12,6 +12,8 @@
 
 #include "Hazel/Window.h"
 
+#include "Hazel/LayerStack.h"
+
 namespace Hazel
 {
 	class HAZEL_API Application
@@ -24,12 +26,16 @@ namespace Hazel
 
 		void OnEvent(Event& e);
 
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* layer);
 	private:
 		//事件处理函数
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window; //使用智能指针管理窗口资源
 		bool m_Running = true;
+
+		LayerStack m_LayerStack;
 	};
 
 	//To be defined in Client
