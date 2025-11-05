@@ -696,6 +696,34 @@ Hazel Engine was started !
 ```
  * 20:27->在`Application.cpp` 中删除/注释 `HZ_CORE_INFO("{0}",e.ToString());`
    * 使`MouseMovedEvent: 580, 9 `白和`APP:ExampleLayer::Updete`绿,
-1.  ImGUI
+14.  现代 `OpenGL` 和 `Glad`   
+ * 04:45->正式开始:
+   * glad 基于官方规范的多语言GL加载生成器 __glew和glad的区别
+ * 05:09->下载Glad : <https://glad.dav1d.de/>
+   * API -> Version:4.6
+   * Profile: Core
+   * Generate a loader 
+   * Generate -> Download `glad.zip`
+ * 06:02->在项目中vender创建glad文件夹(...\Learn_GameEngine_Hazel\Learn_Hazel\Learn_Hazel\vendor\GLAD)
+   * 复制粘贴(include , src )
+ * 06:44->编写`premake5.lua`
+   * 在以下中添加GLAD:
+       * --group "IncludeDir "
+       * --group "Dependencies"
+       * --includedirs:
+       * --Links:
+   * 07:24->搜索`GLEW`,在它后面添加`GLAD`
+ * 07:49->为GLAD创建一个premake:
+   * 08:00->从GLFW中复制premake.lua -> 到GLAD中
+   * 08:12->修改premake5.lua->
+       * --project:
+       * --files:
+       * --includedirs:
+       * --filter:
+       * --filter{}:	
+   * 09:50->将GLAD换成Glad
+ * 10:44->添加Glad成功
+15.  ImGUI
+ * 
  * 02:28
-2.  
+16. 

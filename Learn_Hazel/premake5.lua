@@ -10,11 +10,14 @@ workspace "Learn_Hazel"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+--group "IncludeDir "
 IncludeDir = {}
 IncludeDir["GLFW"] = "Learn_Hazel/vendor/GLFW/include"
+IncludeDir["Glad"] = "Learn_Hazel/vendor/Glad/include"
 
 --group "Dependencies"
 include "Learn_Hazel/vendor/GLFW"
+include "Learn_Hazel/vendor/Glad"
 
 project "Learn_Hazel"
     location "Learn_Hazel"
@@ -32,18 +35,21 @@ files
     "%{prj.name}/src/**.h",
     "%{prj.name}/src/**.cpp",
 }
+--includedirs:
 includedirs
 {
     "%{prj.name}/src",
     "%{prj.name}/vendor/spdlog/include",
 
     "%{IncludeDir.GLFW}",
+    "%{IncludeDir.Glad}",
 
 }
-
+--Links:
 links
 {
     "GLFW",
+    "Glad",
     "opengl32.lib",
 }
 
