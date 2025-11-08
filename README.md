@@ -753,6 +753,7 @@ Hazel Engine was started !
 	}
 ```
    * 16:05->添加断点,运行,查看 `id` 为 1 ->给了一个有效的id,验证成功
+   * 16:10->删除`unsigned id;`和`glGenVertexArrays(1, &id);`
 1.   ImGUI
  * 01:13->介绍方法:
    1. 跑起来
