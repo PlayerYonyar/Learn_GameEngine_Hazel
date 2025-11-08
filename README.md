@@ -14,7 +14,10 @@ This project is licensed under the Apache License, Version 2.0. See the LICENSE 
   1. 日志系统引用库 来自 gabime的spdlog项目[url = https://github.com/gabime/spdlog.git]  
   2. 构建库:premake 来自premake的premake-core项目[url =https://github.com/premake/premake-core.git]  
   3. 图形库:GLFW  
-小贴士:在vs中alt+shift+stay_Click ->框选  这种快捷键很好用.
+小贴士:
+     * 在vs中alt+shift+stay_Click ->框选  这种快捷键很好用.
+     * 注意: 归纳总结
+
 ### Learning objectives(学习目标):  
 # The Cherno's Game Engine Tutorial (The Cherno的游戏引擎教程):  
 YouTube platform link: <https://www.youtube.com/watch?v=JxIZbV_XjAs&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT>  
@@ -723,7 +726,25 @@ Hazel Engine was started !
        * --filter{}:	
    * 09:50->将GLAD换成Glad
  * 10:44->添加Glad成功
+ * 11:21->查看Glad->
+   * 12:05->关于glad.h中的`gladLoadGLLoader(GLADloadproc)`
+   * 12:09->和在`WindowsWindow.cpp`中的窗口上下文`glfwMakeContextCurrent(m_Window)`
+   * 12:23->在`glfwMakeContextCurrent(m_Window)` 下面添加`int status = gladLoadGLLoader()`
+   * 12:28->包含`#include <Glad/glad.h>`和`#include <GLFW/glfw3.h>`
+   * 12:40->gladLoadGLLoader 需要一个指针`(GLADloadproc)glfwGetProcAddress` -> `int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);`
+   * 13:00->添加断言:`HZ_CORE_ASSERT(status, "Failed to initialize Glad!")`
+   * 13:34->将`WindowsWindow.h` 中的 `#include <GLFW/glfw3.h>` 替换成 `struct GLFWwindow;`
+   * 13:46->在`WindowsWindow.cpp`中 添加 `#include <GLFW/glfw3.h>`
+   * 14:00->编辑premake5.lua
+   * 14:28->在`--Hazel-defines:` 中添加 ` "GLFW_INCLUDE_NONE", `->这样可以省去 在`WindowsWindow.cpp`中 添加 `#include <GLFW/glfw3.h>`
+```C++
+#include "glad/glad.h"
+```
+   * 13:09->添加HZ_CORE_ASSERT中断
 15.  ImGUI
- * 
+ * 01:13->介绍方法:
+   1. 跑起来
+   2. 运行正确
+   3. 快速 
  * 02:28
 16. 

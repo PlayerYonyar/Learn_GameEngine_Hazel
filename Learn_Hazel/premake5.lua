@@ -57,6 +57,7 @@ filter "system:windows"
     cppdialect "C++17"
     staticruntime "On"
     systemversion "latest"
+--Hazel-defines:
 defines
 {
 "HZ_PLATFORM_WINDOWS",
