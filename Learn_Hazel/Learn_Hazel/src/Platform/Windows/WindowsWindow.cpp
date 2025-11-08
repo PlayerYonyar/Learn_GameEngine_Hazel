@@ -6,7 +6,7 @@
 #include "Hazel/Events/MouseEvent.h"
 #include "Hazel/Events/KeyEvent.h"
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <GLFW/glfw3.h> 
 
 namespace Hazel
 {

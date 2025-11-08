@@ -736,11 +736,11 @@ Hazel Engine was started !
    * 13:34->将`WindowsWindow.h` 中的 `#include <GLFW/glfw3.h>` 替换成 `struct GLFWwindow;`
    * 13:46->在`WindowsWindow.cpp`中 添加 `#include <GLFW/glfw3.h>`
    * 14:00->编辑premake5.lua
-   * 14:28->在`--Hazel-defines:` 中添加 ` "GLFW_INCLUDE_NONE", `->这样可以省去 在`WindowsWindow.cpp`中 添加 `#include <GLFW/glfw3.h>`
+   * 14:28->在`--Hazel-defines:` 中添加 ` "GLFW_INCLUDE_NONE", `->这样可以省去 在`WindowsWindow.cpp`中 添加 `#include <GLFW/glfw3.h>` -> 只需一个 `#include <glad/glad.h>`
 ```C++
-#include "glad/glad.h"
+#include <glad/glad.h>
 ```
-   * 13:09->添加HZ_CORE_ASSERT中断
+   * 15:24->添加断点,运行,查看 `int status` 为 1 ,验证成功
 15.  ImGUI
  * 01:13->介绍方法:
    1. 跑起来

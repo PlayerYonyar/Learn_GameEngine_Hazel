@@ -6,7 +6,9 @@
 
 #include "Hazel/Log.h"
 
-#include "GLFW/glfw3.h"
+#include <glad/glad.h>
+//#include <GLFW/glfw3.h>因为:在`--Hazel-defines:` 中添加 ` "GLFW_INCLUDE_NONE", `->这样可以省去 在`WindowsWindow.cpp`中 添加 `#include <GLFW/glfw3.h>` -> 只需一个 `#include <glad/glad.h>`
+
 
 namespace Hazel
 {
