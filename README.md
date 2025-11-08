@@ -736,15 +736,27 @@ Hazel Engine was started !
    * 13:34->将`WindowsWindow.h` 中的 `#include <GLFW/glfw3.h>` 替换成 `struct GLFWwindow;`
    * 13:46->在`WindowsWindow.cpp`中 添加 `#include <GLFW/glfw3.h>`
    * 14:00->编辑premake5.lua
-   * 14:28->在`--Hazel-defines:` 中添加 ` "GLFW_INCLUDE_NONE", `->这样可以省去 在`WindowsWindow.cpp`中 添加 `#include <GLFW/glfw3.h>` -> 只需一个 `#include <glad/glad.h>`
+   * 14:28->在`--Hazel-defines:` 中添加 ` "GLFW_INCLUDE_NONE", `->这样可以省去 在`Application.cpp`中 添加 `#include <GLFW/glfw3.h>` -> 只需一个 `#include <glad/glad.h>`
 ```C++
 #include <glad/glad.h>
 ```
    * 15:24->添加断点,运行,查看 `int status` 为 1 ,验证成功
-15.  ImGUI
+   * 15:41->在`Application.cpp`的	`Application::Application(){}`中添加 `unsigned id;`和`glGenVertexArrays(1, &id);` :
+```C++
+	Application::Application()
+	{
+		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+		
+		unsigned id;
+		glGenVertexArrays(1, &id);
+	}
+```
+   * 16:05->添加断点,运行,查看 `id` 为 1 ->给了一个有效的id,验证成功
+1.   ImGUI
  * 01:13->介绍方法:
    1. 跑起来
    2. 运行正确
    3. 快速 
  * 02:28
-16. 
+2.  
