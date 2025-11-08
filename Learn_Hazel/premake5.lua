@@ -14,10 +14,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Learn_Hazel/vendor/GLFW/include"
 IncludeDir["Glad"] = "Learn_Hazel/vendor/Glad/include"
+IncludeDir["ImGui"] = "Learn_Hazel/vendor/ImGui"
 
 --group "Dependencies"
 include "Learn_Hazel/vendor/GLFW"
 include "Learn_Hazel/vendor/Glad"
+include "Learn_Hazel/vendor/ImGui"
 
 project "Learn_Hazel"
     location "Learn_Hazel"
@@ -44,12 +46,15 @@ includedirs
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.Glad}",
 
+    "%{IncludeDir.ImGui}",
+
 }
 --Links:
 links
 {
     "GLFW",
     "Glad",
+    "ImGui",
     "opengl32.lib",
 }
 

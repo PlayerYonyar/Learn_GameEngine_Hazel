@@ -7,6 +7,9 @@
     <Filter Include="Hazel\Events">
       <UniqueIdentifier>{5DEF92FE-4952-22A3-F2D7-5A59DE19EE25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Hazel\ImGui">
+      <UniqueIdentifier>{83AD5E9B-EF62-D790-7857-D167E40BCE94}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
@@ -38,6 +41,9 @@
     <ClInclude Include="src\Hazel\Events\WindowResizeEvent.h">
       <Filter>Hazel\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hazel\ImGui\ImGuiLayer.h">
+      <Filter>Hazel\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="src\Hazel\Layer.h">
       <Filter>Hazel</Filter>
     </ClInclude>
@@ -55,9 +61,13 @@
     </ClInclude>
     <ClInclude Include="src\Test.h" />
     <ClInclude Include="src\hzpch.h" />
+    <ClInclude Include="src\Platform\OpenGL\ImGui_OpenGLRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Hazel\ImGui\ImGuiLayer.cpp">
+      <Filter>Hazel\ImGui</Filter>
+    </ClCompile>
     <ClCompile Include="src\Hazel\Layer.cpp">
       <Filter>Hazel</Filter>
     </ClCompile>
@@ -72,5 +82,6 @@
     </ClCompile>
     <ClCompile Include="src\Test.cpp" />
     <ClCompile Include="src\hzpch.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\ImGui_OpenGLRenderer.cpp" />
   </ItemGroup>
 </Project>

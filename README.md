@@ -754,10 +754,137 @@ Hazel Engine was started !
 ```
    * 16:05->添加断点,运行,查看 `id` 为 1 ->给了一个有效的id,验证成功
    * 16:10->删除`unsigned id;`和`glGenVertexArrays(1, &id);`
-1.   ImGUI
+15.   ImGUI
  * 01:13->介绍方法:
    1. 跑起来
    2. 运行正确
    3. 快速 
- * 02:28
-2.  
+ * 02:28->正式开始
+ * 03:14->`git submodule add --help`-> 查看git帮助: `git submodule add 链接 添加地址`:(注意地址中的`\`要`\\`或`/`)
+   * !!!如使用git submodule add https://github.com/TheCherno/imgui.git Learn_Hazel\Learn_Hazel\vendor\imgui `错误`后,删除相应错误文件,后可在`.gitmodules`删除残留
+   * `git submodule add https://github.com/TheCherno/imgui.git Learn_Hazel/Learn_Hazel/vendor/ImGui`
+ * 03:37->编辑`premake5.lua` 添加 `imgui`
+   * 在以下中添加imgui:
+       * --group "IncludeDir "
+       * --group "Dependencies"
+       * --includedirs:
+       * --Links:
+ * 04:29->查看 `imgui` 的 `premake5.lua`
+ * 04:42->注意编辑`--group "Dependencies"` ,否则不会在vs项目视图中显示
+ * 因为`DC 未定义`等报错,所以暂时弃用`submodule`,使用从`imgui` 找教程对应时间的对应版本 下载,再编辑`premake5.lua`的方法
+ * 05:09->查看
+ * 05:36->关于debug
+ * 05:49->正式开始创建`ImGui`
+   * 创建 Folder : `ImGUI`
+   * 创建Class : `ImGuiLayer` 
+     * 07:00->从`Layer.h` 复制:
+       * void OnAttach();
+       * void OnDetach();
+       * void OnUpdate();
+       * void OnEvent(Event& event);
+   * 右键 `Create Method ...`
+* 08:27->关于依赖 OpenGL
+* 09:00->去ImGui 复制 `imgui_impl_opengl3.h` 和 `imgui_impl_opengl3.cpp`
+* 09:40->添加 `OpenGL`Folder,粘贴上面的复制,并右键->`Include in Project`
+* 10:28->重命名和编辑 `imgui_impl_opengl3.h` 和 `imgui_impl_opengl3.cpp`
+  * 注意再 `.cpp` 添加 预编译头文件 `#include "hzpch.h"//prcompiled header(预编译头文件)`
+* 11:45->修正 `premake5.lua` 为`IncludeDir["ImGui"] = "Learn_Hazel/vendor/ImGui"` 因为`ImGui`下没有`Include` folder
+* 在`ImGui_OpenGLRenderer.cpp`中包含:
+```C++
+#include "hzpch.h"//prcompiled header(预编译头文件)
+#include "imgui.h"
+#include "ImGui_OpenGLRenderer.h"
+#include "glad/glad.h"
+```
+* 12:34->回到`ImGuiLayer.cpp`
+* 13:57->查看`ImGui\examples\example_glfw_opengl3`中的 `main.cpp` 中的 `ImGui::CreateContext();`
+* 15:22->在`ImGuiLayer.cpp` 中的 `	void ImGuiLayer::OnAttach(){}` 添加：
+```C++
+		ImGui::CreateContext();
+		ImGui::StyleColorsDark();
+		ImGuiIO& io = ImGui::GetIO();
+
+		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors; // Enable Mouse Cursors
+		io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos; // Enable SetMousePos backend function
+```
+* 15:34->查看 `imgui_impl_glfw.cpp`
+  * 添加 按键代码 
+  * 16:41->添加 `ImGui_ImplOpenGL3_Init("#version 460"); // Initialize OpenGL3 Renderer with GLSL version 460`
+* 17:26->18:45->在`ImGuiLayer.cpp` 中的 `	void ImGuiLayer::OnUpdate(){}` 添加：
+  * 查看 `ImGui_OpenGLRenderer.h` 从中复制
+```C++
+ImGui_ImplOpenGL3_NewFrame();
+ImGui::NewFrame();
+
+ImGuiIO& io = ImGui::GetIO();
+
+float time = (float)glfwGetTime();
+io.DeltaTime = m_Time > 0.0f ? (time - m_Time) : (1.0f / 60.0f); // Set Delta Time
+m_Time = time;
+
+static bool show = true;
+ImGui::ShowDemoWindow(&show);
+
+ImGui::Render();
+ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+```
+* 18:53->在`ImGuiLayer.h` 中的 `private:` 添加：`float m_Time = 0.0f;`
+* 19:04->在`ImGuiLayer.cpp` 中的 `	void ImGuiLayer::OnUpdate(){}` 添加：`m_Time = time;`
+* 19:32->在`Application.h` 中的 `public:` 添加：`inline Window& GetWindow() { return *m_Window; }`
+* 19:57->`Application& app = Application::Get();io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());//io.DisplaySize = ImVec2(app.Get().GetWindow().GetWidth(), app.Get().GetWindow().GetHeight());`
+* 20:15->在`Application.cpp` 中的添加`	static Application* Application::s_Instance = nullptr;`和`s_Instance = this;`
+```C++
+#define BIND_EVENT_FN(x) std::bind(&x,this, std::placeholders::_1)
+
+	Application* Application::s_Instance = nullptr;
+
+	Application::Application()
+	{
+		s_Instance = this;
+		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));//m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+		
+		//unsigned id;
+		//glGenVertexArrays(1, &id);
+	}
+```
+* 20:47->在`Application.h` 中的 `public:` 添加：`private:static Application* s_Instance;`和`inline Application& Get() { return *s_Instance; }`
+```C++
+	class HAZEL_API Application
+	{
+	public:
+		Application();
+		virtual ~Application();
+
+		void Run();
+
+		void OnEvent(Event& e);
+
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* layer);
+
+		inline Application& Get() { return *s_Instance; }
+		inline Window& GetWindow() { return *m_Window; }
+	private:
+		//事件处理函数
+		bool OnWindowClose(WindowCloseEvent& e);
+
+		std::unique_ptr<Window> m_Window; //使用智能指针管理窗口资源
+		bool m_Running = true;
+
+		LayerStack m_LayerStack;
+
+	private:
+		static Application* s_Instance;
+	};
+```
+* 20:50->删去在`Application.cpp` 中`static Application* Application::s_Instance = nullptr;`前的 `static`
+* 21:04->添加断言`HZ_CORE_ASSERT(!s_Instance, "Application already exists!");`
+* 21:17->在`ImGuiLayer.cpp` 中的 `	void ImGuiLayer::OnUpdate(){}` 中修改
+* 22:34->在`Hazel.h`中添加 `#include "Hazel/ImGui/ImGuiLayer.h"`
+* 22:55->在`Sandbox`中添加 `PushOverlay(new Hazel::ImGuiLayer());`
+* 23:49->修正错误:在`ImGuiLayer.h`中添加 `HAZEL_API `
+* 24:14->修正错误:在`Application.h` 中的`PushLayer`和`PushOverlay`添加`layer->OnAttach();`
+* 24:25->修正错误: 移动`ImGui_ImplOpenGL3_NewFrame();`和`ImGui::NewFrame();`的位置
+* Application& app = Application::Get();报红 E0245->需要20:47->在`Application.h` 中的 inline Application& Get() { return *s_Instance; } 前加`static`变为 `inline static Application& Get() { return *s_Instance; }`
+1.  

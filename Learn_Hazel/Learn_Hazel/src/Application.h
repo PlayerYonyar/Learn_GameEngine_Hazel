@@ -7,11 +7,9 @@
 #include "Hazel/Core.h"	
 
 #include "Hazel/Events/Event.h"
-
 #include "Hazel/Events/ApplicationEvent.h"
 
 #include "Hazel/Window.h"
-
 #include "Hazel/LayerStack.h"
 
 namespace Hazel
@@ -28,6 +26,9 @@ namespace Hazel
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
+
+		inline static Application& Get() { return *s_Instance; }
+		inline Window& GetWindow() { return *m_Window; }
 	private:
 		//事件处理函数
 		bool OnWindowClose(WindowCloseEvent& e);
@@ -36,6 +37,9 @@ namespace Hazel
 		bool m_Running = true;
 
 		LayerStack m_LayerStack;
+
+	private:
+		static Application* s_Instance;
 	};
 
 	//To be defined in Client

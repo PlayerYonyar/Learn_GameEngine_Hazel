@@ -4,9 +4,3 @@
 [submodule "Learn_Hazel/Learn_Hazel/vendor/GLFW"]
 	path = Learn_Hazel/Learn_Hazel/vendor/GLFW
 	url = https://github.com/TheCherno/glfw.git
-[submodule "Learn_HazelLearn_Hazelvendorimgui"]
-	path = Learn_HazelLearn_Hazelvendorimgui
-	url = https://github.com/TheCherno/imgui.git
-[submodule "Learn_Hazel/Learn_Hazel/vendor/imgui"]
-	path = Learn_Hazel/Learn_Hazel/vendor/imgui
-	url = https://github.com/TheCherno/imgui.git
