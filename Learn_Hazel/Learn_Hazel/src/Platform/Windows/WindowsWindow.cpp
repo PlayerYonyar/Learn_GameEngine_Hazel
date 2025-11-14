@@ -159,7 +159,7 @@ namespace Hazel
 				data.EventCallback(event); // Call the event callback
 			});
 
-		/*
+		
 		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode)
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -168,7 +168,7 @@ namespace Hazel
 
 			});
 
-		*/
+		
 	}
 
 	void WindowsWindow::Shutdown()

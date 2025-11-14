@@ -889,7 +889,7 @@ ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 * Application& app = Application::Get();报红 E0245->需要20:47->在`Application.h` 中的 inline Application& Get() { return *s_Instance; } 前加`static`变为 `inline static Application& Get() { return *s_Instance; }`
 16. ImGui事件
 * 02:51->正式开始
-* 03:20->参考代码:imgui_impl_glfw.cpp
+* 03:20->参考代码:`imgui_impl_glfw.cpp`
 * 04:24->
 * 06:39->右键: `Quick Actions and Refactorings ... ` -> Create Declaration/ Definition
 * 07:16->需要检查事件类型,然后转发的函数: `EventDispatcher dispatcher(event);`
@@ -900,4 +900,15 @@ ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 * 09:46->解释dispatcher,然后开始编写...Event
 * 12:50->第一次测试
 * 14:35->修正->第一次测试通过
-1.      
+* 14:49->开始编写`Key...Event`部分代码:
+* 15:20->使用`GLFW键码`
+* 16:54->参考代码:imgui_impl_glfw.cpp
+* 17:24->在`Event.h` 和 `KeyEvent.h`中创建事件类型
+* 18:16->在`WindowsWindow.cpp`中的添加代码:`glfwSetCharCallback`
+* 19:27->回到`ImGuiLayer.cpp`中添加:`int keycode = e.GetKeyCode();`
+* 19:50->测试通过
+* 20:40->解释 `glView
+* 20:48->`!!待做!!`现在,这些Key值只要替换成Hazel的HazelKey代码就行了
+17. GitHub和Hazel仓库:
+* 0:00
+18. 
