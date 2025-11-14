@@ -887,4 +887,17 @@ ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 * 24:14->修正错误:在`Application.h` 中的`PushLayer`和`PushOverlay`添加`layer->OnAttach();`
 * 24:25->修正错误: 移动`ImGui_ImplOpenGL3_NewFrame();`和`ImGui::NewFrame();`的位置
 * Application& app = Application::Get();报红 E0245->需要20:47->在`Application.h` 中的 inline Application& Get() { return *s_Instance; } 前加`static`变为 `inline static Application& Get() { return *s_Instance; }`
-1.  
+16. ImGui事件
+* 02:51->正式开始
+* 03:20->参考代码:imgui_impl_glfw.cpp
+* 04:24->
+* 06:39->右键: `Quick Actions and Refactorings ... ` -> Create Declaration/ Definition
+* 07:16->需要检查事件类型,然后转发的函数: `EventDispatcher dispatcher(event);`
+* 07:55->编写`dispatcher`-> `dispatcher.Dispatch<MouseButtonPressedEvent>(std::bind(&ImGuiLayer::OnMouseButtonPressedEvent,this, std::placeholders::_1));`
+* 08:09->参考在`WindowsWindow.cpp`中的代码
+* 08:23->在`ImGuiLayer.cpp`中编写 `dispatcher`
+* 09:00->由于dispatcher...太长了,所以在`Core.h` 中定义宏: `#define HZ_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)`
+* 09:46->解释dispatcher,然后开始编写...Event
+* 12:50->第一次测试
+* 14:35->修正->第一次测试通过
+1.      
