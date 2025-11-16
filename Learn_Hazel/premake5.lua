@@ -25,6 +25,7 @@ project "Learn_Hazel"
     location "Learn_Hazel"
     kind "SharedLib"
     language "C++"
+    staticruntime "Off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
@@ -60,7 +61,7 @@ links
 
 filter "system:windows"
     cppdialect "C++17"
-    staticruntime "On"
+    --staticruntime "On"
     systemversion "latest"
 --Hazel-defines:
 defines
@@ -79,24 +80,25 @@ postbuildcommands
 filter "configurations:Debug"
     defines "HZ_DEBUG"
     buildoptions "/utf-8"
-    buildoptions "/MDd"
+    runtime "Debug" --buildoptions "/MDd"
     symbols "On"
 
 filter "configurations:Release"
     defines "HZ_RELERASE"
     buildoptions "utf-8"
-    buildoptions "/MD"
+    runtime "Release" --buildoptions "/MD"
     optimize "On"
 filter "configurations:Dist"
     defines "HZ_DIST"
     buildoptions "utf-8"
-    buildoptions "/MD"
+    runtime "Release" --buildoptions "/MD"
     optimize "On"
     
 project "Sandbox"
     location "Sandbox"
     kind "ConsoleApp"
     language "C++"
+    staticruntime "Off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
@@ -118,7 +120,7 @@ links
 }
 filter "system:windows"
     cppdialect "C++17"
-    staticruntime "On"
+    --staticruntime "On"
     systemversion "latest"
 defines
 {
@@ -129,16 +131,16 @@ defines
 filter "configurations:Debug"
     defines "HZ_DEBUG"
     buildoptions "/utf-8"
-    buildoptions "/MDd"
+    runtime "Debug" --buildoptions "/MDd"
     symbols "On"
 
 filter "configurations:Release"
     defines "HZ_RELERASE"
     buildoptions "/utf-8"
-    buildoptions "/MD"
+    runtime "Release" --buildoptions "/MD"
     optimize "On"
 filter "configurations:Dist"
     defines "HZ_DIST"
     buildoptions "/utf-8"
-    buildoptions "/MD"
+    runtime "Release" --buildoptions "/MD"
     optimize "On"

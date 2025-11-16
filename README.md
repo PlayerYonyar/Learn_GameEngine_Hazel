@@ -910,5 +910,48 @@ ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 * 20:40->解释 `glView
 * 20:48->`!!待做!!`现在,这些Key值只要替换成Hazel的HazelKey代码就行了
 17. GitHub和Hazel仓库:
-* 0:00
-18. 
+* P17和P18纯粹是Cherno摸鱼……如果你完全follow他的项目配置（VS+premake），这两P对premake文件做了一点修改。如果你是自行配置的，完全可以跳过这2P，节约你50分钟。
+* 01:25->
+* 06:39->在`premake5.lua`中添加 ` startproject "Sandbox" `,用来设置启动项
+* 09:22->关于Project:项目面板
+* 12:40->关于:EntryPoint.h:  `#ifdef HZ_PLATFORM_WINDOWS ...#endif` 和 `WinMain`->用于与平台更紧密结合
+* 13:52->关于编译器和 `__declspec`
+* 15:01->关于 `Log.h` 中的共享指针 和引用计数,如:侵入式引入计数
+* 16:18->关于构建问题 : 后置构建命令的位置:
+```Lua
+postbuildcommands
+{
+    ("{MKDIR} ../bin/" .. outputdir .. "/Sandbox"),
+    ("{COPYFILE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
+}
+```
+* 19:42->关于 ` "/MDd" `位置->只放在DEBUG中 
+* 20:29->将`buildoptions "/MDd" `换成 `runtime "Debug" `
+    * `buildoptions "/MD"` 换成 `runtime "Release" `
+    * 21:45->解释:`runtime 是Debug或Release,staticruntime 是on 或off->将其设置为DLL或非DLL
+    * 22:09->添加 `staticruntime "Off"`
+    * 22:12->测试->仍是` /MTd ` <->因为一开始加的staticruntime "On",未删除
+    * 22:21->删除 `staticruntime "On"`
+    * 22:41->正确显示:` /MTd `
+* 23:11->关于`HZ_ENABLE_ASSERTS`永远不会启用
+    * 23：29->查看`Core.h`
+    * 23:43->在`premake5.lua`中演示如何开启->添加定义：`HZ_ENABLE_ASSERTS`
+    * 24:08-添加 
+```C++
+#ifdef HZ_BUG
+	#define HZ_ENABLE_ASSERTS
+#endif
+```
+* 使下面的代码默认有效:
+```C++
+#ifdef HZ_ENABLE_ASSERTS
+	 // 如果 x 为假，则触发断言
+#define HZ_ASSERT(x, ...) {if(!(x)) { HZ_ERROR("Assertion Failed: {0}",__VA_ARGS__); __debugbreak(); }} // __debugbreak() 为 VS 的断点函数，其他平台无效
+#define HZ_CORE_ASSERT(x, ...) {if(!(x)) { HZ_CORE_ERROR("Assertion Failed: {0}",__VA_ARGS__); __debugbreak(); }} // __debugbreak() 为 VS 的断点函数，其他平台无效
+
+#else
+#define HZ_ASSERT(x, ...)
+#define HZ_CORE_ASSERT(x, ...)
+#endif
+```
+1.  

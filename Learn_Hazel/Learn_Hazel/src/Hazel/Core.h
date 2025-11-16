@@ -11,6 +11,9 @@
 #error Hazel only supports Windows!
 #endif
 
+#ifdef HZ_DEBUG
+	#define HZ_ENABLE_ASSERTS
+#endif
 
 #ifdef HZ_ENABLE_ASSERTS
 	 // 如果 x 为假，则触发断言
