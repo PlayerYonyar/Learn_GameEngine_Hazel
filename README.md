@@ -956,4 +956,20 @@ postbuildcommands
 ```
 * ERROR:致命错误:  
     * buildoptions "/utf-8"  • 问题：在 Release 和 Dist 配置中，  buildoptions "utf-8"   缺少斜杠   /  ，导致编译器无法识别该选项。
-1.  
+18.  推送请求(PR)
+* 03:48->正式开始
+* 06:43->关于: 用CMake替代Premake
+* 07:47->关于: 添加对Linux的支持
+* 08:47->关于: premake5.lua
+* 11:24->演示: 如何拉到本地仓库 
+    * git status
+    * git diff
+    * git add Hazel/src/Hazel/Core.h
+    * git commit -m "We now linking runtime library dynamically;Defined HZ_ENABLE_ASSERTS if HZ_DEBUG is On. "
+    * 13:09->确认线程库是MDd
+    * git pull origin master 
+    * git push origin master
+* 15:46->关于premake5.lua
+* 18:03->关于startproject "Sandbox"应该的位置
+* 18:46->另一种创建Sandbox文件夹的方式
+19. Input轮询
