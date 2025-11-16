@@ -954,4 +954,6 @@ postbuildcommands
 #define HZ_CORE_ASSERT(x, ...)
 #endif
 ```
+* ERROR:致命错误:  
+    * buildoptions "/utf-8"  • 问题：在 Release 和 Dist 配置中，  buildoptions "utf-8"   缺少斜杠   /  ，导致编译器无法识别该选项。
 1.  
